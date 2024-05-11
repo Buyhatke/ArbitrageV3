@@ -605,7 +605,7 @@ const init = async () => {
         let pairs;
         try {
             pairs = await fetchUniswapData();
-            fs.writeFileSync("pairMap.json", JSON.stringify(pairs), "utf-8");
+            // fs.writeFileSync("pairMap.json", JSON.stringify(pairs), "utf-8");
         } catch (err) {
             console.log("fetch uniswapV3 data error");
             continue;
@@ -637,4 +637,17 @@ const init = async () => {
     }
 };
 
-init();
+async function start() {
+    console.log("begin");
+    try {
+        await init();
+        setTimeout(function () { start(); }, 5000);
+    }
+    catch (err) {
+        console.log(`Uncaught error ${err}`);
+        process.exit();
+    }
+    console.log("end");
+
+}
+start();
